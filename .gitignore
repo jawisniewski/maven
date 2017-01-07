@@ -1,47 +1,34 @@
-# Windows image file caches
-Thumbs.db
-ehthumbs.db
+# use glob syntax.
+syntax: glob
+*.class
+*~
+*.bak
+*.old
+*.pdf
 
-# Folder config file
-Desktop.ini
+# logs
+*.log
 
-# Recycle Bin used on file shares
-$RECYCLE.BIN/
+# eclipse conf file
+.settings
+.settings/
+.classpath
+.project
+.springBeans
 
-# Windows Installer files
-*.cab
-*.msi
-*.msm
-*.msp
 
-# Windows shortcuts
-*.lnk
+# building
+target
+tmp*
+dist
+test-output
 
-# =========================
-# Operating System Files
-# =========================
+# other scm
+.svn
+.CVS
+.hg*
 
-# OSX
-# =========================
+# switch to regexp syntax.
+#  syntax: regexp
+#  ^\.pc/
 
-.DS_Store
-.AppleDouble
-.LSOverride
-
-# Thumbnails
-._*
-
-# Files that might appear in the root of a volume
-.DocumentRevisions-V100
-.fseventsd
-.Spotlight-V100
-.TemporaryItems
-.Trashes
-.VolumeIcon.icns
-
-# Directories potentially created on remote AFP share
-.AppleDB
-.AppleDesktop
-Network Trash Folder
-Temporary Items
-.apdisk
