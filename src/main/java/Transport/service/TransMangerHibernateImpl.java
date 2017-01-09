@@ -33,7 +33,7 @@ public class TransMangerHibernateImpl implements TransManager {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<Run> getAllTypes() {
+	public List<Run> getAllRun() {
 		return sessionFactory
 				.getCurrentSession()
 				.getNamedQuery("run.all")
@@ -41,15 +41,14 @@ public class TransMangerHibernateImpl implements TransManager {
 	}
 
 	@Override
-	public Run findByIdType(Long id) {
+	public Run findByIdRun(Long id) {
 		return (Run)sessionFactory
 				.getCurrentSession()
 				.get(Run.class,id);
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
-	public Run findByDescriptType(String descript) {
+	public Run findByDescriptRun(String descript) {
 		return (Run)sessionFactory
 				.getCurrentSession()
 				.getNamedQuery("run.byDescript")
@@ -59,14 +58,20 @@ public class TransMangerHibernateImpl implements TransManager {
 
 	@Override
 	public void deleteRun(Run runs) {
-		runs = (Run) sessionFactory.getCurrentSession()
-				.get(Run.class,runs.getId());
-		if(runs.getCars()!=null)
-			for (Car car :runs.getCars()){
-					car.setTypes(null);
-					sessionFactory.getCurrentSession().update(car);
+//		runs = (Run) sessionFactory.getCurrentSession()
+//				.get(Run.class,runs.getId());
+//		if(runs.getCars()!=null)
+//			for (Car car :runs.getCars()){
+//					car.setName(null);
+//					sessionFactory.getCurrentSession().update(car);
+//
+//			}
+//		sessionFactory.getCurrentSession().delete(runs);
+//
 
-			}
+		runs = (Run) sessionFactory
+				.getCurrentSession()
+				.get(Run.class, runs.getId());
 		sessionFactory.getCurrentSession().delete(runs);
 	}
 
@@ -93,49 +98,52 @@ public class TransMangerHibernateImpl implements TransManager {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
-	public Car findByTittleCar(String tittle) {
+	public Car findByNameCar(String name) {
 		return (Car) sessionFactory
 				.getCurrentSession()
-				.getNamedQuery("car.byTitle")
-				.setString("tittle",tittle)
+				.getNamedQuery("car.byName")
+				.setString("name",name)
 				.uniqueResult();
 	}
 
 	@Override
 	public void deleteCar(Car car) {
-		car = (Car) sessionFactory
-				.getCurrentSession()
-				.get(Car.class, car.getId());
+		car = (Car) sessionFactory.getCurrentSession()
+				.get(Car.class,car.getId());
+		if(car.getRuns()!=null)
+			for (Run run :car.getRuns()){
+				run.setCars(null);
+				sessionFactory.getCurrentSession().update(run);
+
+			}
 		sessionFactory.getCurrentSession().delete(car);
+
+
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
-	public List<Car> getAllRunCar(Long idType) {
-		Run runs = (Run) sessionFactory.getCurrentSession()
-				.get(Run.class, idType);
-		List<Car> allRunCar =new ArrayList<>();
+	public List<Run> getAllRunCar(Long idCars) {
+//		Run runs = (Run) sessionFactory.getCurrentSession()
+//				.get(Run.class, idCars);
+		List<Run> allRunCar ;
 		allRunCar =sessionFactory.getCurrentSession()
-				.getNamedQuery("car.byRun")
-				.setLong("types",idType)
+				.getNamedQuery("run.byCar")
+				.setLong("cars",idCars)
 				.list();
 
 		return allRunCar;
 	}
 
 	@Override
-	public void addRunToCar(Long idType, Long idBook) {
+	public void addRunToCar(Long idRun, Long idCar) {
 		Car car = (Car) sessionFactory.getCurrentSession().get(
-				Car.class, idBook);
-		Run types = (Run) sessionFactory.getCurrentSession()
-				.get(Run.class, idType);
-		car.setTypes(types);
+				Car.class, idCar);
+		Run run = (Run) sessionFactory.getCurrentSession()
+				.get(Run.class, idRun);
+		run.setCars(car);
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
-//	tymczasowo na testy
 	public void clearAll() {
 		sessionFactory
 				.getCurrentSession()
@@ -143,7 +151,7 @@ public class TransMangerHibernateImpl implements TransManager {
 				.executeUpdate();
 		sessionFactory
 				.getCurrentSession()
-				.createQuery("delete from Cars")
+				.createQuery("delete from Car")
 				.executeUpdate();
 	}
 

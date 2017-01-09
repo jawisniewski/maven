@@ -7,20 +7,20 @@ import Transport.domain.Run;
 
 public interface TransManager {
 
-	Long addRun(Run runs);
-	List<Run> getAllTypes();
-	Run findByIdType(Long id);
-	Run findByDescriptType(String descript);
+	Long addRun(Run run);
+	List<Run> getAllRun();
+	Run findByIdRun(Long id);
+	Run findByDescriptRun(String descript);
 	void deleteRun(Run runs);
 
 
 	Long addCar(Car car);
 	List<Car> getAllCar();
 	Car findByIdCar(Long id);
-	Car findByTittleCar(String tittle);
+	Car findByNameCar(String name);
 	void deleteCar(Car car);
 
-	List<Car> getAllRunCar(Long idType);
+	List<Run> getAllRunCar(Long idCar);
 	void addRunToCar(Long idType,Long idBook);
 	void clearAll();
 

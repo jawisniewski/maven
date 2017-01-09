@@ -7,16 +7,17 @@ import javax.persistence.*;
 @Entity
 @NamedQueries({
 		@NamedQuery(name = "run.all", query = "Select t from Run t"),
-		@NamedQuery(name = "run.byDescript",query = "select t from Run t where t.descript=:descript")
-
+		@NamedQuery(name = "run.byDescript",query = "select t from Run t where t.descript=:descript"),
+		@NamedQuery(name = "run.byCar",query = "select a from Run a where a.cars=:cars")
 })
 public class Run {
 
 	private Long idRun;
+	private String name;
 	private String descript;
-	private int yearT;
-	private String shortcut;
-	private Collection<Car> cars;
+	private double price;
+	private double distance;
+	private Car cars;
 
 
 	@Id
@@ -28,8 +29,8 @@ public class Run {
 	public void setId(Long idRun) {
 		this.idRun = idRun;
 	}
-
-	@Column(unique = true,nullable = false)
+//
+//	@Column(unique = true,nullable = false)
 	public String getDescript() {
 		return descript;
 	}
@@ -38,27 +39,37 @@ public class Run {
 		this.descript = descript;
 	}
 
-	public int getYearT() {
-		return yearT;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+	public Double getPrice() {
+		return price;
 	}
 
-	public void setYearT(int yearT) {
-		this.yearT = yearT;
+	public void setPrice(Double price) {
+		this.price = price;
 	}
 
-	public String getShortcut() {
-		return shortcut;
+	public Double getDistance() {
+		return distance;
 	}
 
-	public void setShortcut(String shortcut) {
-		this.shortcut = shortcut;
+	public void setDistance(Double distance) {
+		this.distance = distance;
 	}
-	@OneToMany(mappedBy = "types",cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
-	public Collection<Car> getCars() {
+
+
+	@ManyToOne
+	@JoinColumn(name = "car_IdCar")
+	public Car getCars() {
 		return cars;
 	}
 
-	public void setCars(Collection<Car> cars) {
+	public void setCars(Car cars) {
 		this.cars = cars;
 	}
 }

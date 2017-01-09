@@ -4,25 +4,27 @@ import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import java.util.Collection;
 
 
 @Entity
 @NamedQueries({
         @NamedQuery(name="car.all", query = "select b from Car b"),
-        @NamedQuery(name = "car.byTitle",query = "select b from Car b where b.tittle=:tittle "),
-        @NamedQuery(name = "car.byRun",query = "select a from Car a where a.types=:types")
+        @NamedQuery(name = "car.byName",query = "select b from Car b where b.name=:name "),
+       // @NamedQuery(name = "car.byRun",query = "select a from Car a where a.runs=:runs")
 })
 public class Car {
 
     private Long idCar;
-    private String tittle;
-    private String country;
-    private int yearB;
-    private Run runs;
+    private String name;
+    private String warnings;
+    private double course;
+    private int year;
+    private Collection<Run> runs;
 
 
     @Id
-    @Column(name = "IDCar")
+    @Column(name = "idCar")
     @GeneratedValue(strategy = GenerationType.AUTO)
     public Long getId() {
         return idCar;
@@ -31,37 +33,58 @@ public class Car {
     public void setId(Long idCar) {
         this.idCar = idCar;
     }
-    @Column(unique = true,nullable = false)
-    public String getTittle() {
-        return tittle;
+    //@Column(unique = true,nullable = false)
+    public String getName() {
+        return name;
     }
 
-    public void setTittle(String tittle) {
-        this.tittle = tittle;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getCountry() {
-        return country;
+    public String getWarnings() {
+        return warnings;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public void setCourse(double course) {
+        this.course = course;
     }
 
-    public int getYearB() {
-        return yearB;
+
+    public double getCourse() {
+        return course;
     }
 
-    public void setYearB(int yearB) {
-        this.yearB = yearB;
+    public void setWarnings(String warnings) {
+        this.warnings = warnings;
     }
-    @ManyToOne
-    @JoinColumn(name = "Run")
-    public Run getTypes() {
+
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+//    @ManyToOne
+//    @JoinColumn(name = "run_idRun")
+//    public Run getRuns() {
+//        return runs;
+//    }
+//
+//    public void setRuns(Run runs) {
+//        this.runs = runs;
+//    }
+//
+
+    @OneToMany(mappedBy = "cars",cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
+    public Collection<Run> getRuns() {
         return runs;
     }
 
-    public void setTypes(Run run) {
-        this.runs = run;
+    public void setRuns(Collection<Run> runs) {
+        this.runs = runs;
     }
+
 }
