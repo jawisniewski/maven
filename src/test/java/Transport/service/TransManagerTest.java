@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
@@ -49,34 +50,36 @@ public class TransManagerTest {
 
         run1.setDescript(randomString);
         run1.setName("pol-eng");
-        run1.setDistance(2000.00);
-        run1.setPrice(2000.00);
+        run1.setDistance(4000.00);
+        run1.setPrice(4000.00);
 
         run2.setDescript(randomString);
         run2.setName("pol-fra");
-        run2.setDistance(2000.00);
-        run2.setPrice(2000.00);
+        run2.setDistance(3000.00);
+        run2.setPrice(3000.00);
 
         run3.setDescript(randomString);
-        run3.setName("pol-eng");
+        run3.setName("pol-ger");
         run3.setDistance(2000.00);
         run3.setPrice(2000.00);
 
-        car1.setName("polska");
+        car1.setName("MAN TGA");
         car1.setWarnings(randomString);
-        car1.setYear(1234);
-        car1.setCourse(2999);
+        car1.setYear(2015);
+        car1.setCourse(20000);
 
 
-        car2.setName("polska");
+        car2.setName("DAF XF");
         car2.setWarnings(randomString);
-        car2.setYear(1234);
-        car2.setCourse(2999);
+        car2.setYear(2010);
+        car2.setCourse(200000);
     }
 
     @After
+    @Rollback
     public void tearDown() throws Exception {
-        transManager.clearAll();
+
+        //transManager.clearAll();
     }
 
     @Test
@@ -123,10 +126,10 @@ public class TransManagerTest {
       //  Long idCar1= transManager.addCar(car1);
         transManager.addCar(car2);
 //        run1.setCars(allCars);
-        assertEquals(car2.getName(),
+        assertEquals(car2.getId(),
                 transManager
-                        .findByNameCar(car2.getName())
-                        .getName()
+                        .findByIdCar(car2.getId())
+                        .getId()
 
         );
 
@@ -140,7 +143,7 @@ public class TransManagerTest {
         transManager.addRun(run1);
 
         transManager.addRun(run2);
-        assertTrue(transManager.getAllRun().size()==2);
+        assertTrue(2<=transManager.getAllRun().size());
 
 
     }
@@ -150,7 +153,7 @@ public class TransManagerTest {
 
         transManager.addCar(car1);
         transManager.addCar(car2);
-        assertTrue(transManager.getAllCar().size()==2);
+        assertTrue(2<=transManager.getAllCar().size());
 
     }
     @Test
@@ -218,7 +221,40 @@ public class TransManagerTest {
        assertEquals(id, transManager.getAllRunCar(idCar1).get(0).getId());
 
         assertEquals(id2, transManager.getAllRunCar(idCar1).get(1).getId());
+        assertEquals(0,transManager.getAllRunCar(idCar2).size());
 //        assertTrue(transManager.getAllRunCar(idType).get(0).getId()!=idRuby);
     }
 
+    @Test
+    public void findCarByYear() throws Exception{
+        transManager.addCar(car1);
+        transManager.addCar(car2);
+       assertTrue( 1 <=transManager.findCarByYear(2013).size());
+     //  assertEquals("MAN TGA",transManager.findCarByYear(2013).get(0).getName());
+    }
+
+    @Test
+    public void editCar() throws  Exception{
+        transManager.addCar(car1);
+        transManager.addCar(car2);
+
+      Car  editCar = transManager.findByIdCar(car1.getId());
+
+        editCar.setName("Iveco");
+        transManager.editCar(editCar);
+        assertEquals(editCar.getName(),transManager.findByIdCar(editCar.getId()).getName());
+
+    }
+    public void editRun() throws  Exception{
+        transManager.addRun(run1);
+        transManager.addRun(run2);
+
+        Run editRun = transManager.findByIdRun(run1.getId());
+
+        editRun.setName("eng-pol");
+        transManager.editRun(editRun);
+        assertEquals(editRun.getName(),transManager.findByIdRun(editRun.getId()).getName());
+        assertEquals(run2.getName(),transManager.findByIdRun(run1.getId()).getName());
+
+    }
 }

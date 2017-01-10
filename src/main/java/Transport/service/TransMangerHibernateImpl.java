@@ -32,7 +32,6 @@ public class TransMangerHibernateImpl implements TransManager {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public List<Run> getAllRun() {
 		return sessionFactory
 				.getCurrentSession()
@@ -57,6 +56,14 @@ public class TransMangerHibernateImpl implements TransManager {
 	}
 
 	@Override
+	public List <Car> findCarByYear(int year){
+		return   sessionFactory
+				.getCurrentSession()
+				.getNamedQuery("car.byYear")
+				.setInteger("year",year)
+				.list();
+	}
+	@Override
 	public void deleteRun(Run runs) {
 //		runs = (Run) sessionFactory.getCurrentSession()
 //				.get(Run.class,runs.getId());
@@ -74,7 +81,22 @@ public class TransMangerHibernateImpl implements TransManager {
 				.get(Run.class, runs.getId());
 		sessionFactory.getCurrentSession().delete(runs);
 	}
+	@Override
+	public  void editRun(Run run){
+//		run = (Run) sessionFactory
+//				.getCurrentSession()
+//				.get(Run.class, run.getId());
+		sessionFactory.getCurrentSession().update(run);
+	}
 
+	@Override
+	public  void editCar(Car car){
+//		car = (Car) sessionFactory
+//				.getCurrentSession()
+//				.get(Car.class, car.getId());
+		sessionFactory.getCurrentSession().update(car);
+
+	}
 	@Override
 	public Long addCar(Car car) {
 		car.setId(null);
@@ -82,7 +104,6 @@ public class TransMangerHibernateImpl implements TransManager {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public List<Car> getAllCar() {
 		return sessionFactory
 				.getCurrentSession()
@@ -153,6 +174,7 @@ public class TransMangerHibernateImpl implements TransManager {
 				.getCurrentSession()
 				.createQuery("delete from Car")
 				.executeUpdate();
+
 	}
 
 

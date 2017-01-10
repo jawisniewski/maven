@@ -12,16 +12,19 @@ public interface TransManager {
 	Run findByIdRun(Long id);
 	Run findByDescriptRun(String descript);
 	void deleteRun(Run runs);
-
+	void editRun(Run run);
 
 	Long addCar(Car car);
 	List<Car> getAllCar();
 	Car findByIdCar(Long id);
 	Car findByNameCar(String name);
+	List<Car> findCarByYear(int year);
 	void deleteCar(Car car);
+	void editCar(Car car);
 
 	List<Run> getAllRunCar(Long idCar);
 	void addRunToCar(Long idType,Long idBook);
+
 	void clearAll();
 
 }
