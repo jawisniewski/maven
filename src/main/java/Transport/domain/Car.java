@@ -10,7 +10,7 @@ import java.util.Collection;
 @Entity
 @NamedQueries({
         @NamedQuery(name="car.all", query = "select b from Car b"),
-        @NamedQuery(name = "car.byName",query = "select b from Car b where b.name=:name "),
+        @NamedQuery(name = "car.byName",query = "select b from Car b where b.name like :name "),
         @NamedQuery(name = "car.byYear",query = "select a from Car a where a.year>:year")
 })
 public class Car {

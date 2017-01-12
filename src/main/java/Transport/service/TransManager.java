@@ -17,7 +17,7 @@ public interface TransManager {
 	Long addCar(Car car);
 	List<Car> getAllCar();
 	Car findByIdCar(Long id);
-	Car findByNameCar(String name);
+	List<Car> findByNameCar(String name);
 	List<Car> findCarByYear(int year);
 	void deleteCar(Car car);
 	void editCar(Car car);

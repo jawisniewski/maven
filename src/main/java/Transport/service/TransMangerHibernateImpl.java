@@ -119,12 +119,14 @@ public class TransMangerHibernateImpl implements TransManager {
 	}
 
 	@Override
-	public Car findByNameCar(String name) {
-		return (Car) sessionFactory
+	public List<Car> findByNameCar(String name) {
+		 List<Car> findCar;
+		findCar =sessionFactory
 				.getCurrentSession()
 				.getNamedQuery("car.byName")
-				.setString("name",name)
-				.uniqueResult();
+				.setString("name","%"+name+"%")
+				.list();
+		return findCar;
 	}
 
 	@Override
@@ -144,8 +146,7 @@ public class TransMangerHibernateImpl implements TransManager {
 
 	@Override
 	public List<Run> getAllRunCar(Long idCars) {
-//		Run runs = (Run) sessionFactory.getCurrentSession()
-//				.get(Run.class, idCars);
+
 		List<Run> allRunCar ;
 		allRunCar =sessionFactory.getCurrentSession()
 				.getNamedQuery("run.byCar")

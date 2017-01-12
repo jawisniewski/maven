@@ -22,12 +22,11 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:/beans.xml" })
-@TransactionConfiguration(transactionManager = "txManager", defaultRollback = true)
+@TransactionConfiguration(transactionManager = "txManager", defaultRollback = false)
 @Transactional
 public class TransManagerTest {
 
     String randomString="";
-
     Run run1=new Run();
     Run run2 = new Run();
     Run run3 = new Run();
@@ -95,22 +94,26 @@ public class TransManagerTest {
 
    }
 //
-//    @Test
-//    public void findByNameCar() {
-//
-//        transManager.addCar(car1);
-//
-//        transManager.addCar(car2);
-//
-////        run1.setCars(allCars);
+    @Test
+    public void findByNameCar() {
+
+    long      id=  transManager.addCar(car1);
+
+        transManager.addCar(car2);
+
+//        run1.setCars(allCars);
 //        assertEquals(car2.getName(),
 //                transManager
 //                        .findByNameCar(car2.getName())
 //                        .getName()
 //
 //        );
-//
-//    }
+
+        assertNotNull(car2.getName(),transManager.findByNameCar(car2.getName()));
+        assertEquals(car1.getName(),transManager.findByNameCar("MAN").get(0).getName());
+
+        assertEquals(car1.getName(),transManager.findByNameCar("TGA").get(0).getName());
+    }
 
 
 //
